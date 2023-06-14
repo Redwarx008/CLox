@@ -2,28 +2,25 @@
 #define clox_chunk_h
 
 #include "common.h"
+#include "value.h"
 
-
- enum OpCode
- {
+typedef enum {
+	OP_CONSTANT,
 	OP_RETURN,
- };
+} OpCode;
 
- class Chunk
- {
- public:
-	 Chunk()
-	 {
-		 count = 0;
-		 capacity = 0;
-		 code = nullptr;
-	 }
-	 int count;
-	 int capacity;
-	 uint8_t* code;
- private:
-	 void writeChunk(Chunk* chunk, uint8_t byte);
- };
+typedef struct {
+	int count;
+	int capacity;
+	uint8_t* code;
+	int* lines;
+	ValueArray constants;
+} Chunk;
 
+
+void initChunk(Chunk* chunk);
+void writeChunk(Chunk* chunk, uint8_t byte, int line);
+int addConstant(Chunk* chunk, Value value);
+void freeChunk(Chunk* chunk);
 
 #endif
